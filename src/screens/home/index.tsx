@@ -1,0 +1,102 @@
+import { View, Text, TextInput, TouchableOpacity, FlatList } from 'react-native'
+import React from 'react'
+import { styles } from './style'
+import Item from '../../components/item'
+
+interface Task {
+  id: string
+  title: string
+  checked: boolean
+}
+
+export function Home() {
+  const [tasks, setTasks] = React.useState<Task[]>([
+    { id: '1', title: 'Task 1', checked: false },
+    { id: '2', title: 'Task 2', checked: false },
+  ])
+  const [taskTitle, setTaskTitle] = React.useState('')
+
+  const filteredTasksCompletely = tasks.filter((task) => task.checked === true)
+
+  const filteredTasksPending = tasks.filter((task) => task.checked === false)
+
+  function handleAddTask() {
+    const newTask = {
+      id: String(Math.random() * 1000),
+      title: taskTitle,
+      checked: false,
+    }
+
+    setTasks([...tasks, newTask])
+    setTaskTitle('')
+  }
+
+  function handleCheckItem(taskId: string) {
+    console.log('Task marcada!', taskId)
+    setTasks(
+      tasks.map((task) =>
+        task.id === taskId ? { ...task, checked: !task.checked } : task
+      )
+    )
+  }
+  function handleRemoveTask(taskId: string) {
+    console.log('Task removida!', taskId)
+
+    setTasks(tasks.filter((task) => task.id !== taskId))
+  }
+
+  return (
+    <>
+      <View style={styles.container}>
+        <Text style={styles.introductText}>Bem vindo ao meu To-do List!!</Text>
+
+        <View style={styles.form}>
+          <TextInput
+            style={styles.input}
+            placeholder="Insira o nome da task"
+            placeholderTextColor="white"
+            onChangeText={setTaskTitle}
+            value={taskTitle}
+          />
+
+          <TouchableOpacity style={styles.button} onPress={handleAddTask}>
+            <Text style={styles.buttonText}>+</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.tasksContainerPending}>
+          <Text style={styles.pendingTasks}>Tasks pendentes</Text>
+
+          <FlatList
+            data={filteredTasksPending}
+            keyExtractor={(task) => task.id}
+            renderItem={(task) => (
+              <Item
+                title={task.item.title}
+                checkBox={task.item.checked}
+                onCheck={() => handleCheckItem(task.item.id)}
+                onRemove={() => handleRemoveTask(task.item.id)}
+              />
+            )}
+          />
+        </View>
+
+        <View style={styles.tasksContainerRecived}>
+          <Text style={styles.recivedTasks}>Tasks já realizadas</Text>
+
+          <FlatList
+            data={filteredTasksCompletely}
+            keyExtractor={(task) => task.id}
+            renderItem={(task) => (
+              <Item
+                title={task.item.title}
+                checkBox={task.item.checked}
+                onCheck={() => handleCheckItem(task.item.id)}
+                onRemove={() => handleRemoveTask(task.item.id)}
+              />
+            )}
+          />
+        </View>
+      </View>
+    </>
+  )
+}
