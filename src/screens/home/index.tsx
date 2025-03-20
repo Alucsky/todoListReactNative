@@ -11,8 +11,7 @@ interface Task {
 
 export function Home() {
   const [tasks, setTasks] = React.useState<Task[]>([
-    { id: '1', title: 'Task 1', checked: false },
-    { id: '2', title: 'Task 2', checked: false },
+    { id: '1', title: 'Exemplo task 1', checked: false },
   ])
   const [taskTitle, setTaskTitle] = React.useState('')
 
@@ -64,7 +63,9 @@ export function Home() {
           </TouchableOpacity>
         </View>
         <View style={styles.tasksContainerPending}>
-          <Text style={styles.pendingTasks}>Tasks pendentes</Text>
+          <Text style={styles.pendingTasks}>
+            Tasks pendentes: {filteredTasksPending.length}
+          </Text>
 
           <FlatList
             data={filteredTasksPending}
@@ -77,11 +78,16 @@ export function Home() {
                 onRemove={() => handleRemoveTask(task.item.id)}
               />
             )}
+            ListEmptyComponent={() => (
+              <Text style={styles.emptyListText}>Nenhuma task pendente</Text>
+            )}
           />
         </View>
 
         <View style={styles.tasksContainerRecived}>
-          <Text style={styles.recivedTasks}>Tasks já realizadas</Text>
+          <Text style={styles.recivedTasks}>
+            Tasks já realizadas: {filteredTasksCompletely.length}
+          </Text>
 
           <FlatList
             data={filteredTasksCompletely}
@@ -93,6 +99,9 @@ export function Home() {
                 onCheck={() => handleCheckItem(task.item.id)}
                 onRemove={() => handleRemoveTask(task.item.id)}
               />
+            )}
+            ListEmptyComponent={() => (
+              <Text style={styles.emptyListText}>Nenhuma task completa</Text>
             )}
           />
         </View>

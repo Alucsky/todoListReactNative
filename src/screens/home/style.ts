@@ -65,4 +65,9 @@ export const styles = StyleSheet.create({
     borderRadius: 16,
     maxHeight: 300,
   },
+  emptyListText: {
+    color: 'white',
+    fontSize: 20,
+    textAlign: 'center',
+  },
 })
