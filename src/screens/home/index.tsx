@@ -1,4 +1,11 @@
-import { View, Text, TextInput, TouchableOpacity, FlatList } from 'react-native'
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  FlatList,
+  Alert,
+} from 'react-native'
 import React from 'react'
 import { styles } from './style'
 import Item from '../../components/item'
@@ -20,6 +27,13 @@ export function Home() {
   const filteredTasksPending = tasks.filter((task) => task.checked === false)
 
   function handleAddTask() {
+    if (tasks.some((task) => task.title === taskTitle)) {
+      return Alert.alert('Task já existente', 'Essa task ja existe na lista')
+    }
+    if (taskTitle === '') {
+      Alert.alert('Task vazia', 'Por favor, preencha o campo da task')
+      return
+    }
     const newTask = {
       id: String(Math.random() * 1000),
       title: taskTitle,
@@ -31,7 +45,6 @@ export function Home() {
   }
 
   function handleCheckItem(taskId: string) {
-    console.log('Task marcada!', taskId)
     setTasks(
       tasks.map((task) =>
         task.id === taskId ? { ...task, checked: !task.checked } : task
@@ -39,9 +52,13 @@ export function Home() {
     )
   }
   function handleRemoveTask(taskId: string) {
-    console.log('Task removida!', taskId)
-
-    setTasks(tasks.filter((task) => task.id !== taskId))
+    Alert.alert('Remover task', `deseja realmente remover esta task?`, [
+      { text: 'Cancelar', style: 'cancel' },
+      {
+        text: 'Remover',
+        onPress: () => setTasks(tasks.filter((task) => task.id !== taskId)),
+      },
+    ])
   }
 
   return (

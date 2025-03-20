@@ -3,11 +3,12 @@ import { StyleSheet } from 'react-native'
 export const styles = StyleSheet.create({
   container: {
     width: '100%',
-    backgroundColor: '#1F1E25',
+    backgroundColor: '#1F1E30',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 10,
+    borderRadius: 5,
   },
   name: {
     color: '#ffffff',
@@ -35,6 +36,8 @@ export const styles = StyleSheet.create({
     backgroundColor: 'green',
     justifyContent: 'center',
     alignItems: 'center',
+    borderColor: 'black',
+    borderWidth: 2,
   },
   checkButtonPending: {
     marginLeft: 16,
@@ -44,5 +47,7 @@ export const styles = StyleSheet.create({
     backgroundColor: 'red',
     justifyContent: 'center',
     alignItems: 'center',
+    borderColor: 'black',
+    borderWidth: 2,
   },
 })
